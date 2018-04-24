@@ -1,14 +1,18 @@
 module Api::V1
   class IngredientsController < ApplicationController
     def index
-      ingredients = Ingredient.select{|ingredient| ingredient.user_id == params[:user_id].to_i}
+      ingredients = User.find(params[:user_id]).ingredients
       render json: ingredients
     end
 
     def show
       # ingredients = Ingredient.select{|ingredient| ingredient.user_id == params[:user_id].to_i}
       ingredient = Ingredient.find(params[:ingredient_id])
-      render json: ingredient
+      if ingredient
+        render json: ingredient
+      else
+        render json: {errors: ingredient.errors.full_messages}
+      end
     end
 
     def create
@@ -24,6 +28,9 @@ module Api::V1
     end
 
     def destroy
+      ingredient = Ingredient.find(params[:id])
+      render json: ingredient
+      ingredient.destroy
     end
 
     private
