@@ -29,7 +29,6 @@ module Api::V1
 
     def destroy
       ingredient = Ingredient.find(params[:id])
-      render json: ingredient
       ingredient.destroy
     end
 
