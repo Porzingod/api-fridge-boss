@@ -1,2 +1,0 @@
-class RecipeIngredientJoinsController < ApplicationController
-end

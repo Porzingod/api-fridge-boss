@@ -5,7 +5,8 @@ module Api::V1
 
     def show
       user = User.find(params[:id])
-      render json: user
+      favorites = User.recipes
+      render json: {user: user, favorites: favorites}
     end
 
     private

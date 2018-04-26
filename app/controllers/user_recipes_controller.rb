@@ -1,2 +1,0 @@
-class UserRecipeController < ApplicationController
-end
