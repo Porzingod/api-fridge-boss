@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_04_24_132914) do
+ActiveRecord::Schema.define(version: 2018_04_26_205905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,32 @@ ActiveRecord::Schema.define(version: 2018_04_24_132914) do
     t.index ["user_id"], name: "index_ingredients_on_user_id"
   end
 
+  create_table "recipe_ingredient_joins", force: :cascade do |t|
+    t.bigint "recipe_id"
+    t.bigint "recipe_ingredient_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["recipe_id"], name: "index_recipe_ingredient_joins_on_recipe_id"
+    t.index ["recipe_ingredient_id"], name: "index_recipe_ingredient_joins_on_recipe_ingredient_id"
+  end
+
+  create_table "recipe_ingredients", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "recipes", force: :cascade do |t|
+    t.string "recipeName"
+    t.string "recipeId"
+    t.integer "totalTimeInSeconds"
+  end
+
+  create_table "user_recipes", force: :cascade do |t|
+    t.bigint "recipe_id"
+    t.bigint "user_id"
+    t.index ["recipe_id"], name: "index_user_recipes_on_recipe_id"
+    t.index ["user_id"], name: "index_user_recipes_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "password_digest"
@@ -32,4 +58,8 @@ ActiveRecord::Schema.define(version: 2018_04_24_132914) do
   end
 
   add_foreign_key "ingredients", "users"
+  add_foreign_key "recipe_ingredient_joins", "recipe_ingredients"
+  add_foreign_key "recipe_ingredient_joins", "recipes"
+  add_foreign_key "user_recipes", "recipes"
+  add_foreign_key "user_recipes", "users"
 end
