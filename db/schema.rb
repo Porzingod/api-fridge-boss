@@ -40,6 +40,8 @@ ActiveRecord::Schema.define(version: 2018_04_26_205905) do
   create_table "recipes", force: :cascade do |t|
     t.string "recipeName"
     t.string "recipeId"
+    t.string "ingredients"
+    t.string "smallImageUrls"
     t.integer "totalTimeInSeconds"
   end
 

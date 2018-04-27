@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :sessions, only: [:create, :destroy]
-      resources :users, only: [:create, :show] do
+      resources :users, only: [:create] do
+        get '/favorites', to: "users#favorites"
         resources :ingredients, only: [:index, :show, :create, :update, :destroy]
       end
       resources :recipes, only: [:create]
