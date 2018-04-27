@@ -13,6 +13,10 @@ Rails.application.routes.draw do
       resources :user_recipes, only: [:create]
       # match '/user_recipes/', to: 'user_recipes#destroy', via: :delete
       post '/user_recipes/delete', to: 'user_recipes#destroy'
+
+      get '/fetch_recipes', to: 'recipes#fetch_recipes'
+      post '/search_recipes', to: 'recipes#search_recipes'
+      get '/find_recipe', to: 'recipes#find_recipe'
     end
   end
 
