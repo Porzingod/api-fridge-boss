@@ -1,21 +1,11 @@
 module Api::V1
-  class UserRecipeController < ApplicationController
-    def create
-      user_recipe = UserRecipe.new(user_recipe_params)
-      if user_recipe.save
-        render json: user_recipe
-      else
-        render json: {errors: user_recipe.errors.full_messages}
-      end
-    end
-
+  class UserRecipesController < ApplicationController
     def destroy
+      recipe = Recipe.find_by(recipeId: params[:recipeId])
+      user_recipe = UserRecipe.find_by(user_id: params[:user_id], recipe_id: recipe.id)
+      byebug
+      user_recipe.destroy
     end
 
-    private
-
-    def user_recipe_params
-      params.permit(:user_id, :recipe_id)
-    end
   end
 end

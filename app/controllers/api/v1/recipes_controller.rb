@@ -3,13 +3,19 @@ module Api::V1
     def create
       recipe = Recipe.new(recipe_params)
       if recipe.save
-        UserRecipe.create(user_id: params[:user_id], recipe_id: recipe.id)
-        byebug
+        user_recipe = UserRecipe.find_by(user_id: params[:user_id], recipe_id: recipe.id)
+        if !user_recipe
+          UserRecipe.create(user_id: params[:user_id], recipe_id: recipe.id)
+        end
+        
         render json: recipe
       else
-        recipe = Recipe.find_by recipeId: params[:recipe][:recipeId]
-        UserRecipe.create(user_id: params[:user_id], recipe_id: recipe.id)
-        byebug
+        recipe = Recipe.find_by(recipeId: params[:recipe][:recipeId])
+        user_recipe = UserRecipe.find_by(user_id: params[:user_id], recipe_id: recipe.id)
+        if !user_recipe
+          UserRecipe.create(user_id: params[:user_id], recipe_id: recipe.id)
+        end
+        
         render json: recipe
       end
     end
