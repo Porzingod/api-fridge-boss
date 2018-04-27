@@ -6,6 +6,9 @@ module Api::V1
     def favorites
       user = User.find(params[:user_id])
       favorites = user.recipes
+      favorites = favorites.each do |recipe|
+        recipe.ingredients = recipe.recipe_ingredients.map {|ingr| ingr.name}
+      end
       render json: favorites
     end
 
