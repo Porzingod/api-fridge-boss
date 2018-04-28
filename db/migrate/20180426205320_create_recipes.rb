@@ -5,6 +5,8 @@ class CreateRecipes < ActiveRecord::Migration[5.2]
     t.string :recipeId
     t.string :smallImageUrls
     t.integer :totalTimeInSeconds
+    t.string :ingredients
+    t.string :cuisines_list
     end
   end
 end

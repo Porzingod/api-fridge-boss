@@ -8,6 +8,7 @@ module Api::V1
       favorites = user.recipes
       favorites = favorites.each do |recipe|
         recipe.ingredients = recipe.recipe_ingredients.map {|ingr| ingr.name}
+        recipe.cuisines_list = recipe.cuisines.map {|cuisine| cuisine.name}
       end
       render json: favorites
     end
