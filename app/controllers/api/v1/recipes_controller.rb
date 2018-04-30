@@ -58,7 +58,7 @@ module Api::V1
           cuisines.push(cuisine)
         end
       end
-      
+
       if recipe
         user_recipe = UserRecipe.find_by(user_id: params[:user_id], recipe_id: recipe.id)
 
