@@ -9,27 +9,40 @@ module Api::V1
     ALLOWED_HOLIDAY = "&allowedHoliday[]=holiday^holiday-"
     yummlyHolidays = ["Christmas", "Summer", "Thanksgiving", "New+Year", "Super+Bowl", "Game+Day", "Halloween", "Hanukkah", "4th+of+July"]
     NEAREST_HOLIDAY = yummlyHolidays[1]
+    ALLOWED_CUISINE = "&allowedCuisine[]=cuisine^cuisine-"
+    ALLOWED_COURSE = "&allowedCourse[]=course^course-"
 
     def results(count, page)
       "&maxResult=#{count}&start=#{count * page}"
     end
 
     def fetch_recipes
-      fetch = RestClient.get(YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + ALLOWED_HOLIDAY + NEAREST_HOLIDAY + results(40, params[:q].to_i))
+      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + ALLOWED_HOLIDAY + NEAREST_HOLIDAY + results(40, params[:q].to_i)
+      fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results
     end
 
     def search_recipes
-      searchIngredients = ""
-      params[:ingredients].map{|obj| obj["name"].split(" ").join("+")}.each{|str| searchIngredients += ALLOWED_INGR + str}
-      fetch = RestClient.get(YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + searchIngredients + results(40, params[:q].to_i))
+      search_ingredients = ""
+      params[:ingredients].map{|obj| obj["name"].split(" ").join("+")}.each{|str| search_ingredients += ALLOWED_INGR + str}
+      filter_cuisine = ""
+      if params[:cuisine]
+        filter_cuisine = ALLOWED_CUISINE + params[:cuisine].downcase
+      end
+      filter_course = ""
+      if params[:course]
+        filter_course = ALLOWED_COURSE + params[:course].downcase
+      end
+      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + filter_cuisine + filter_course + search_ingredients + results(40, params[:q].to_i)
+      fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results
     end
 
     def find_recipe
-      fetch = RestClient.get(YUMMLY_GET_RECIPE_URL + params[:q] + YUMMLY_ID_AND_KEY)
+      url = YUMMLY_GET_RECIPE_URL + params[:q] + YUMMLY_ID_AND_KEY
+      fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results
     end
