@@ -11,6 +11,8 @@ module Api::V1
     NEAREST_HOLIDAY = yummlyHolidays[1]
     ALLOWED_CUISINE = "&allowedCuisine[]=cuisine^cuisine-"
     ALLOWED_COURSE = "&allowedCourse[]=course^course-"
+    ALLOWED_ALLERGY = "&allowedAllergy[]="
+    ALLOWED_DIET = "&allowedDiet[]="
 
     def results(count, page)
       "&maxResult=#{count}&start=#{count * page}"
@@ -28,13 +30,21 @@ module Api::V1
       params[:ingredients].map{|obj| obj["name"].split(" ").join("+")}.each{|str| search_ingredients += ALLOWED_INGR + str}
       filter_cuisine = ""
       if params[:cuisine]
-        filter_cuisine = ALLOWED_CUISINE + params[:cuisine].downcase
+        filter_cuisine = ALLOWED_CUISINE + params[:cuisine].downcase.split(" ").join("-")
       end
       filter_course = ""
       if params[:course]
-        filter_course = ALLOWED_COURSE + params[:course].downcase
+        filter_course = ALLOWED_COURSE + params[:course]
       end
-      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + filter_cuisine + filter_course + search_ingredients + results(40, params[:q].to_i)
+      filter_allergies = ""
+      if params[:allergies]
+        params[:allergies].map{|allergy| filter_allergies += ALLOWED_ALLERGY + allergy[:id].to_s + "^" + allergy[:name]}
+      end
+      filter_diets = ""
+      if params[:diets]
+        params[:diets].map{|diet| filter_diets += ALLOWED_DIET + diet[:id].to_s + "^" + diet[:name]}
+      end
+      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + filter_cuisine + filter_course + filter_allergies + filter_diets + search_ingredients + results(40, params[:q].to_i)
       fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results
