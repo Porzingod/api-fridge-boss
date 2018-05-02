@@ -49,3 +49,5 @@ gem 'figaro'
 gem 'rest-client'
 
 gem 'json'
+
+gem 'active_model_serializers'
