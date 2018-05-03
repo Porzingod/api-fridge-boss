@@ -1,5 +1,7 @@
 module Api::V1
   class UsersController < ApplicationController
+    before_action :authenticate_user, only: [:favorites]
+    
     def create
       user = User.new(user_params)
       if user.save

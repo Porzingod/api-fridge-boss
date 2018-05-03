@@ -19,7 +19,7 @@ module Api::V1
     end
 
     def fetch_recipes
-      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + ALLOWED_HOLIDAY + NEAREST_HOLIDAY + results(40, params[:q].to_i)
+      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + ALLOWED_HOLIDAY + NEAREST_HOLIDAY + results(32, params[:q].to_i)
       fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results
@@ -44,7 +44,7 @@ module Api::V1
       if params[:diets]
         params[:diets].map{|diet| filter_diets += ALLOWED_DIET + diet[:id].to_s + "^" + diet[:name]}
       end
-      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + filter_cuisine + filter_course + filter_allergies + filter_diets + search_ingredients + results(40, params[:q].to_i)
+      url = YUMMLY_RECIPES_URL + YUMMLY_ID_AND_KEY + filter_cuisine + filter_course + filter_allergies + filter_diets + search_ingredients + results(32, params[:q].to_i)
       fetch = RestClient.get(url)
       results = JSON.parse(fetch)
       render json: results

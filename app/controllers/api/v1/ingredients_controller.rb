@@ -1,5 +1,7 @@
 module Api::V1
   class IngredientsController < ApplicationController
+    before_action :authenticate_user, only: [:index, :create, :destroy]
+
     def index
       ingredients = User.find(params[:user_id]).ingredients
       render json: ingredients

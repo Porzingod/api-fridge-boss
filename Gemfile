@@ -51,3 +51,6 @@ gem 'rest-client'
 gem 'json'
 
 gem 'active_model_serializers'
+
+gem 'jwt'
+gem 'knock'
