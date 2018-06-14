@@ -9,3 +9,5 @@ A small application built using React + Redux and a Ruby on Rails API backend. I
 <a href="https://youtu.be/scUg8TZ5dFo">Video Demo</a>
 
 <a href="https://fridge-boss.herokuapp.com">Live Demo</a>
+
+![Fridge Boss](https://i.imgur.com/L3LHMYb.jpg)
